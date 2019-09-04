@@ -1,0 +1,41 @@
+
+# 链接
+[link](https://leetcode.com/problems/house-robber/description/)
+# 思路
+不能连着偷，想偷到最多钱。
+可以连着的我会，不能连着的。。。。
+就隔着呗。
+`dp[i] = max(nums[i] + dp[i - 2], dp[i - 1])`
+# javascript
+为了方便，前面加了两个0。
+状态转移方程`dp[i] = max(dp[i-2]+nums[i-2], dp[i-1])`
+```js
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var rob = function(nums) {
+    const dp = [];
+    dp[0] = 0;
+    dp[1] = 0;
+    for(let i = 2; i < nums.length + 2; i++)
+        {
+            dp[i] = Math.max(dp[i - 2] + nums[i - 2], dp[i - 1]);
+        }
+    return dp[nums.length + 1];
+};
+```
+
+# python
+为了节省空间，只需要两个变量存储dp[i-2]和dp[i-1]即可
+```python
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        a = 0
+        b = 0
+        for num in nums:
+            tem = b
+            b = max(a + num, b)
+            a = tem
+        return b
+```
