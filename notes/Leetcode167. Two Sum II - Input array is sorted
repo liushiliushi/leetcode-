@@ -1,0 +1,63 @@
+
+# 链接
+[link](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/description/)
+# 思路
+暴力解法的话，就是列举出所有可能的切片，然后看齐和是否等于target。但是这里所给的序列已经经过排序，就想着，可以数字偏大的话，就左移，偏小的话，就右移。直到找到合适的那两个指针为止。
+# python
+## 1.
+刚开始单纯地想了一个思路
+
+```python
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        len_ = len(numbers)
+        left = len_ // 2
+        right = left + 1
+        while True:
+            if ((numbers[left] + numbers[right]) > target) and left :
+                left -= 1
+            elif ((numbers[left] + numbers[right]) > target) and  not left :
+                right -= 1
+            elif ((numbers[left] + numbers[right]) < target) and right :
+                right += 1
+            elif ((numbers[left] + numbers[right]) < target) and  not righ :
+                left += 1
+        return [left, right]
+            
+```
+不明白自己为啥想当然地把指针放在了中间位置。
+应该把指针放在两边位置，这样遇到了想要找的数，是不会越过去的
+
+```python
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        left = 0
+        right = len(numbers) -1
+        while left < right:
+            if (numbers[left] + numbers[right]) > target:
+                right -= 1
+            elif (numbers[left] + numbers[right]) < target:
+                left += 1
+            else:
+                return [left + 1, right + 1]
+```
+这样，从两边慢慢靠近想要的数，就不会越过了。
+## 2.
+之后看到了一种，更为巧妙的解法。
+这里用到了**字典**，将值作为键。真的 非常 巧妙
+遍历数组里面的所有值，并且将其值作为键，其编号作为值存储在字典里面。
+若遇到一个`num`使得`target-num`在字典里面，那么就结束循环。
+
+```python
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        visit = {}
+        for index, num in enumerate(numbers):
+            if target - num in visit:
+                return [visit[target - num], index + 1]
+            else:
+                visit[num] = index + 1
+        
+```
+# c
+字典那种思路，c语言这里不能用。因为不知道数组究竟有多大。
