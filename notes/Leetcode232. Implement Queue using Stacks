@@ -1,0 +1,206 @@
+
+# 链接
+[link](https://leetcode.com/problems/implement-queue-using-stacks/)
+# 思路
+emmmmm.....貌似没啥难的吧？
+但是题中要求是用栈来实现。栈的特点是只能在一端进行所有操作。
+# python
+## 1.
+不用栈
+```python
+class MyQueue:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.list = []
+        
+        
+
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        self.list.append(x)
+
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        tem = self.list[0]
+        del self.list[0]
+        return tem
+        
+
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        return self.list[0]
+
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+        if not self.list:
+            return True
+        else:
+            return False
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()
+```
+## 2.
+用栈
+栈只能在栈顶操作，但是题目中要求对栈底操作。包括读取、删除栈底元素。
+要是只读取，我还可以给MyQueue设置一个属性，记录栈底元素。但是还要删除的话，就有些麻烦了。
+所以这里设置一个辅助栈。好麻烦啊QAQ
+这里注意，python空数组pop会报错。不过Javascript空数组pop会返回undefined
+这样的话，python必须还得判断栈是否为空
+
+```python
+class MyQueue:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.list = []
+        self.helpList = []
+        
+        
+
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        self.list.append(x)
+        
+
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        # 当list不为空时
+        self.helpList = []
+        while self.list:
+            self.helpList.append(self.list.pop())
+        # 取栈顶元素
+        tem = self.helpList.pop()
+        while self.helpList:
+            self.list.append(self.helpList.pop())
+        return tem
+
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        self.helpList = []
+        while self.list:
+            self.helpList.append(self.list.pop())
+        # 取栈顶元素
+        
+        tem = self.helpList[-1]
+        while self.helpList:
+            self.list.append(self.helpList.pop())
+        return tem
+
+    
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+        if not self.list:
+            return True
+        else:
+            return False
+
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()
+```
+用这种方法时间变长了
+# javascript
+
+```
+/**
+ * Initialize your data structure here.
+ */
+var MyQueue = function() {
+    this.stack = [];
+    this.helpStack = [];
+};
+
+/**
+ * Push element x to the back of queue. 
+ * @param {number} x
+ * @return {void}
+ */
+MyQueue.prototype.push = function(x) {
+    this.stack.push(x)
+};
+
+/**
+ * Removes the element from in front of queue and returns that element.
+ * @return {number}
+ */
+MyQueue.prototype.pop = function() {
+    let cur = null;
+    while(cur = this.stack.pop())
+    {
+        this.helpStack.push(cur);
+    }
+    let tem = this.helpStack.pop();
+    while(cur = this.helpStack.pop())
+    {
+        this.stack.push(cur);
+    }
+    return tem;
+};
+
+/**
+ * Get the front element.
+ * @return {number}
+ */
+MyQueue.prototype.peek = function() {
+    let cur = null;
+    while(cur = this.stack.pop())
+    {
+        this.helpStack.push(cur);
+    }
+    let tem = this.helpStack[-1];
+    while(cur = this.helpStack.pop())
+    {
+        this.stack.push(cur);
+    }
+    return tem;
+};
+
+/**
+ * Returns whether the queue is empty.
+ * @return {boolean}
+ */
+MyQueue.prototype.empty = function() {
+    return this.stack.length === 0;
+};
+
+/** 
+ * Your MyQueue object will be instantiated and called as such:
+ * var obj = new MyQueue()
+ * obj.push(x)
+ * var param_2 = obj.pop()
+ * var param_3 = obj.peek()
+ * var param_4 = obj.empty()
+ */
+```
+这里最后一步很巧妙，也是JavaScript常用的判断数组是否为空的方法。
