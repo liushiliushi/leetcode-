@@ -1,0 +1,70 @@
+@[toc]
+# 链接
+[link](https://leetcode.com/problems/majority-element/description/)
+# 思路
+没啥时间和空间上的特殊要求。
+可以遍历整个数组，将值作为键，存在字典里，每次键对应的值+1。并且判断值是否超过数组大小的一半。
+
+# python
+## 1.
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        n = len(nums)
+        visit = {}
+        for num in nums:
+            if num not in visit:
+                visit[num] = 1
+                if visit[num] > (n//2):
+                    return num
+            else:
+                visit[num] += 1
+                if visit[num] > (n//2):
+                    return num
+        
+```
+需要注意的是，特殊情况，比如数组只有一个元素
+## 2.
+**投票算法**
+原理
+>找出一组数字序列中出现次数大于总数1/2的数字（并且假设这个数字一定存在）。显然这个数字只可能有一个。摩尔投票算法是基于这个事实：每次从序列里选择两个不相同的数字删除掉（或称为“抵消”），最后剩下一个数字或几个相同的数字，就是出现次数大于总数一半的那个。
+
+这个算法针对大于n/2的元素
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        count = 1
+        majority = nums[0]
+        for num in nums[1:]:
+            if count == 0:
+                majority = num
+            if majority == num:
+                count += 1
+            else:
+                count -= 1
+        return majority
+                
+```
+
+## 3.
+直接**排序**。所以排序是个好东西.
+众数一定会出现在中间位置
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        nums.sort()
+        return nums[len(nums) // 2]
+```
+然后又把代码简化了下,变为了一行
+
+```python
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        return sorted(nums)[len(nums) // 2]
+```
+# C
+原来越懒得用c了
+人生苦短，我用python！
