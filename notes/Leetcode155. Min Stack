@@ -1,0 +1,78 @@
+
+# 链接
+[link](https://leetcode.com/problems/min-stack/description/)
+# 思路
+感觉好像不难，基本的栈的操作。之前用c写过
+# python
+## 1.
+貌似没啥难度。但是用时好长啊QAQ
+```python
+class MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.list = []
+        
+
+    def push(self, x: int) -> None:
+        self.list.append(x)
+        
+
+    def pop(self) -> None:
+        del self.list[-1]
+
+    def top(self) -> int:
+        return self.list[-1]
+
+    def getMin(self) -> int:
+        return min(self.list)
+
+```
+## 2.
+举个栗子，[5, 4, 3, 6, 8, 7]这一数组，为了不用每次都查找最小的数，我们可以时刻更新最小值。但是更新后前面的最小数就无法保存。所以可以另外设一个数组来保存。比如[5, 4, 3, 3, 3, 3]。但是这样空间复杂度上升了。
+所以有一种更好的方法，即每次存储真实值与**上一个**最小值的差值。这样数组就是[5, -1, -1, 3, 5, 4]，并且保存当前最小值，遇到更小的可以时刻更新。这样原来的最小值也不会丢失。因为要是遇到了负数，说明需要更新最小值了。
+
+```python
+class MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.list = []
+        self.min = float('inf')
+        
+
+    def push(self, x: int) -> None:
+
+        self.list.append(x - self.min)
+        self.min = min(x, self.min) # 更新最小值
+
+    def pop(self) -> None:
+        if not self.list:
+            return
+        if self.list[-1] < 0:
+            self.min -= self.list[-1]
+            del self.list[-1]
+        else:
+            del self.list[-1]
+        
+
+    def top(self) -> int:
+        if not self.list:
+            return
+        return self.list[-1] + self.min if self.list[-1] > 0 else self.min
+
+    def getMin(self) -> int:
+        return self.min
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+```
