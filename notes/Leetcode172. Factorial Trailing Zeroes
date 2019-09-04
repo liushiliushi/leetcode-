@@ -1,0 +1,31 @@
+
+# 链接
+[link](https://leetcode.com/problems/factorial-trailing-zeroes/description/)
+# 思路
+好像不是很难，但是有要求，时间复杂度是logarithmic.
+计算n!就不能用递归的思路了。
+那就不要算n！咯，题目要求的是求最后有多少个0.
+只要达到目的即可。
+首先，要发现一个规律`f(n) = n/5 + n/5^2 + n/5^3 + n/5^4 + n/5^5+..`
+递归：`f(n) = n / 5 + f(n / 5)`
+# python
+## 1.
+```python
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        if n== 0:
+            return 0
+        else:
+            return n//5 + self.trailingZeroes(n//5)
+```
+## 2.
+
+```python
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        count = 0
+        while n >= 5:
+            n //= 5
+            count += n
+        return count
+```
