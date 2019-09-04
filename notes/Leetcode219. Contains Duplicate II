@@ -1,0 +1,57 @@
+
+# 链接
+[link](https://leetcode.com/problems/contains-duplicate-ii/description/)
+# 思路
+貌似不是很难。让我想到了之前的一道题。
+这道题也可以用字典来解决。遍历数组中的元素，若字典中有这个值的键，那么判断距离是否小于k，若没有，那么值作为键，index作为值存储在字典中。
+不过貌似不是很聪明的亚子。而且这种方法不能应用在c语言上。
+# python
+
+```
+class Solution:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        visit = {}
+        for index, num in enumerate(nums):
+            if num in visit:
+                if (index - visit[num]) <= k:
+                    return True
+                visit[num] = index
+            else:
+                visit[num] = index
+        return False
+```
+代码简化
+一直循环，每次判断条件是否符合，符合则跳出。
+
+```python
+class Solution:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        visit = {}
+        for index, num in enumerate(nums):
+            if num in visit and (index - visit[num]) <= k:
+                return True
+            visit[num] = index
+        return False
+```
+# javascript
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {boolean}
+ */
+var containsNearbyDuplicate = function(nums, k) {
+    const visit = {};
+    for(let i = 0; i < nums.length; i++)
+    {
+        const num = nums[i]
+        if(visit[num] != undefined && (i - visit[num]) <= k)
+        {
+            return true;
+        }
+        visit[num] = i;    
+    }
+    return false;
+};
+```
