@@ -1,0 +1,19 @@
+
+# 链接
+[link](https://leetcode.com/problems/reverse-bits/description/)
+# 思路
+位运算。
+如果是用位运算的话，也不难了。`<<`和`>>`这两个符号，原来还在想有啥用，这就用上了。
+# python
+
+```python
+class Solution:
+    # @param n, an integer
+    # @return an integer
+    def reverseBits(self, n):
+        result = 0
+        for i in range(32):
+            result = (result << 1) + (n & 1)
+            n >>= 1
+        return result
+```
