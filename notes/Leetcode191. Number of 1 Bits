@@ -1,0 +1,43 @@
+@[toc]
+# 链接
+[link](https://leetcode.com/problems/number-of-1-bits/description/)
+# 思路
+嗯，只要用位运算右移的话，好像也没啥难的。
+# python
+## 1.
+```python
+class Solution(object):
+    def hammingWeight(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        result = 0
+        while n != 0:
+            result += n & 1
+            n >>= 1
+        return result
+```
+## 2.
+还有一种神奇的思路
+n = n & (n - 1) 可以消除 n 最后的一个1的原理。
+这样更快一些。
+>举个栗子
+>n      = 101010000
+>n - 1 = 101001111
+>通过`-1`这个操作，使得 1 -> 0, 后面的 0->1, 这样再做&运算，就都为0了，
+>变为     101000000
+>知道n=0为止
+```python
+class Solution(object):
+    def hammingWeight(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        result = 0
+        while n :
+            n = n & (n - 1)
+            result += 1
+        return result
+```
