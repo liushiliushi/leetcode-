@@ -1,0 +1,75 @@
+
+# 链接
+[link](https://leetcode.com/problems/power-of-four/description/)
+# 思路
+感觉不难。就只要一直除4，看最后是否为1即可.
+这里需要考虑特殊情况0.注意，1也是4的幂次方。
+# javascript
+## 1.
+```js
+/**
+ * @param {number} num
+ * @return {boolean}
+ */
+var isPowerOfFour = function(num) {
+    if(num == 0){
+        return false;
+    }
+    while(num % 4 == 0){
+        num /= 4;
+    }
+    if(num == 1){
+        return true;
+    }
+    else{
+        return false;
+    }
+};
+```
+用时很长。
+## 2.
+题目中提示，能否不使用循环递归来做。
+这里发现一个神奇的规律。
+ *2 的幂次方的特点是最低位之外，其他位置有且仅有一个 1（1 可以在任意位置）*
+*4 的幂次方的二进制表示 1 的位置都是在奇数位（且不在最低位），其他位置都为 0*
+那么，如何判断最低位之外有且只有一个1呢？之前做过一道题，消去末尾0的。就是只要n&(n-1)==0即只有一个1.
+判断1是否在奇数位的话，这里借助一个特殊的数。`01010101010101010101010101010101`
+n & 这个数还是n本身。因为都是1才是1.
+
+```js
+/**
+ * @param {number} num
+ * @return {boolean}
+ */
+var isPowerOfFour = function(num) {
+    if(num == 0){
+        return false;
+    }
+    if(((num & (num - 1 )) == 0) && ((num & 0b01010101010101010101010101010101) == num)){
+        return true;
+    }
+    else{
+        return false;
+    }
+};
+```
+bug找了好久。javascript 这里要记得加（）。但是python貌似有些地方就不用加也行。
+找到原因了，是他们的**运算符优先级不同**！
+>python `&` 比 `==` 优先级高
+>javascript `==` 比 `&` 优先级高
+
+所以说，要考虑优先级的问题啊！为了保险可以多加几个（）
+
+# python
+
+```python
+class Solution:
+    def isPowerOfFour(self, num: int) -> bool:
+        if num == 0:
+            return False
+        if (num & (num - 1) == 0) and (num & 0b01010101010101010101010101010101 == num):
+            return True
+        else:
+            return False
+        
+```
