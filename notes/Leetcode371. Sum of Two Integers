@@ -1,0 +1,28 @@
+
+# 链接
+[link](https://leetcode.com/problems/sum-of-two-integers/description/)
+# 思路
+计算加法，却不能用‘+’，‘-’
+首先想到能不能用二进制运算。
+异或是不进位的加法
+与 + 左移可以完成进位操作
+二者结合就可以完成运算了。
+# python
+这里有一个神奇的地方——python有默认递归深度，所以会出现`maximum recursion depth exceeded`的报错
+而我目前还没有想打解决办法。
+# javascript
+
+```js
+/**
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
+ */
+var getSum = function(a, b) {
+    if (a === 0) return b;
+
+    if (b === 0) return a;
+
+    return getSum(a ^ b, (a & b) << 1);
+};
+```
