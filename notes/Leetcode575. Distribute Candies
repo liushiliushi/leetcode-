@@ -1,0 +1,34 @@
+
+# 链接
+[link](https://leetcode.com/problems/distribute-candies/description/)
+# 思路
+最多拿到多少种。
+可利用集合去除重复元素。
+# python
+
+```python
+class Solution:
+    def distributeCandies(self, candies: List[int]) -> int:
+        sum_ = len(candies) // 2
+        len_ = len(set(candies))
+        if len_ >= sum_ :
+            return sum_
+        else:
+            return len_
+```
+好简单啊
+
+# javascript
+巧妙地直接返回最小值
+这里除以2直接用位运算右移来表示
+```js
+/**
+ * @param {number[]} candies
+ * @return {number}
+ */
+var distributeCandies = function(candies) {
+    const count = new Set(candies);
+    return Math.min(count.size, candies.length >> 1)
+    
+};
+```
