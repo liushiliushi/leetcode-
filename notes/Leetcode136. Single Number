@@ -1,0 +1,42 @@
+
+# 链接
+[link](https://leetcode.com/problems/single-number/description/)
+# 思路
+倒是能想出来方法，但是貌似很复杂，自己都不想用。
+比如再建一个新列表，循环的时候每次在新列表里查找有无这个元素，没有的话就添加进去，有的话就删除。最后返回新列表里面的元素。
+每次都得在新列表里面查找有无这个元素，时间复杂度很大。
+# python
+## 1.
+
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        a= []
+        for i in nums:
+            if i in a:
+                a.remove(i)
+            else:
+                a.append(i)
+        return a[0]
+```
+竟然用了1252ms
+## 2.
+参考了一下，可以用位运算符！根本对位运算符没印象，一脸懵逼。之前还一直以为位运算符也没啥用呢hhh。在这里用异或，真的很简洁优雅。
+原理：A XOR B XOR B = A
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        a = 0
+        for num in nums:
+            a ^= num
+            
+        return a
+```
+## 3.
+思路简单不多说了
+```python
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        return sum(set(nums)) * 2 - sum(nums)
+```
+
