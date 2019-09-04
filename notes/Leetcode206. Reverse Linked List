@@ -1,0 +1,64 @@
+
+# 链接
+[link](https://leetcode.com/problems/reverse-linked-list/description/)
+# 思路
+题目中有提示，**迭代**，或者**递归**。
+# c
+## 1.
+迭代
+一个个遍历原链表，然后将每一个值插在新链表最前面。
+
+```c
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+
+struct ListNode* reverseList(struct ListNode* head){
+    struct ListNode *currentPtr = head, *headPtr = NULL, *currentPtr1 = NULL;
+    while(currentPtr)
+    {
+        currentPtr1 = malloc(sizeof(struct ListNode));
+        currentPtr1->val = currentPtr->val;
+        currentPtr1->next = headPtr;
+        headPtr = currentPtr1;
+        currentPtr = currentPtr->next;
+    }
+    return headPtr;
+}
+
+
+```
+4ms!
+## 2.
+递归。一直想不到思路。因为函数要求返回排序后的头结点，这里我不知道怎么连接。因为应该是  排序后的尾节点->next = 当前头结点。
+所以很迷。
+看了别人的答案，是用了两个函数，两个！
+我还是，用循环吧orz
+# python
+迭代
+```python
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def reverseList(self, head: ListNode) -> ListNode:
+        pre = None
+        cur = head
+        while cur:
+            tem = cur.next
+            cur.next = pre
+            pre = cur
+            cur = tem
+        return pre
+            
+            
+```
+递归，也不好用。因为每次都要返回一个结点。（好吧其实我也没搞懂）
